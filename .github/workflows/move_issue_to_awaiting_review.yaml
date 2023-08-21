@@ -1,0 +1,21 @@
+name: Move Issue to Awaiting Review Column
+on:
+  pull_request_review:
+    types:
+      - submitted
+
+jobs:
+  move_issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Move issue on approval
+        uses: peter-evans/move-project-card@v1
+        with:
+          project: 3
+          column_id: "5231262c"
+          issue_number: ${{ github.event.pull_request.issue_url | split('/') | last }}
+          repo_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
